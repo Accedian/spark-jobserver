@@ -52,6 +52,7 @@ pushd "${bin}/.." > /dev/null
          ${CONFIG_DIR}/${ENV}.conf
          config/shiro.ini
          config/log4j-cluster.properties
+         config/log4j-stdout.properties
          config/log4j-server.properties"
 
   rm -rf $WORK_DIR
