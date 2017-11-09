@@ -22,7 +22,7 @@ RUN cd /opt/spark-jobserver-src && \
 
 ENV PATH /opt/sbt/bin:$PATH
 
-COPY ./config/shiro.ini.template /opt/spark-job-server-src/config/shiro.ini
+COPY ./config/shiro.ini.basic.template /opt/spark-job-server-src/config/shiro.ini
 
 RUN cd /opt/spark-jobserver-src && bin/server_package.sh docker
 
