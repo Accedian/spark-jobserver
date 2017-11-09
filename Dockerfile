@@ -1,8 +1,6 @@
 FROM gcr.io/npav-172917/spark-2.2.0-hadoop-2.7:latest
 
 
-COPY ./docker-entrypoint.sh /
-RUN chmod +x /docker-entrypoint.sh
 
 RUN apt-get update \
  && apt-get install -y bc vim wget git 
@@ -17,12 +15,14 @@ RUN pip install pyhocon
 COPY . /opt/spark-jobserver-src/
 
 # This will allow server logs to go to console. This is desirable for a docker service
-ENV LOGGING_OPTS="-Dlog4j.configuration=file:$appdir/log4j-console.properties"
+ENV LOGGING_OPTS="-Dlog4j.configuration=file:/opt/spark-jobserver/log4j-stdout.properties"
 
 RUN cd /opt/spark-jobserver-src && \
 	/opt/sbt/bin/sbt assembly 
 
 ENV PATH /opt/sbt/bin:$PATH
+
+COPY ./config/shiro.ini.template /opt/spark-job-server-src/config/shiro.ini
 
 RUN cd /opt/spark-jobserver-src && bin/server_package.sh docker
 
@@ -45,6 +45,8 @@ VOLUME /database
 
 EXPOSE 8090 9999 
 
+COPY ./docker-entrypoint.sh /
+RUN chmod +x /docker-entrypoint.sh
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
