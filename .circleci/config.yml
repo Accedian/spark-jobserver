@@ -4,29 +4,41 @@
 version: 2
 # Jobs 
 jobs:
+  build:
+    docker:
+      - image: circleci/openjdk:8u121-jdk
+
+    working_directory: /aod-deployer
+    steps:
+      - run:
+	  name: "Login into NPAV GCE docker repository"
+          docker login -u ${GCE_DOCKER_RO_USERNAME} -p "$(echo $GCR_DOCKER_RO_PASSWORD)" https://gcr.io
+	  
+      - checkout   
+      
+      - setup_remote_docker
+      
+      - run:
+          name: "Building Spark job-server"
+          command: make circleci-docker 
+            
+
   release:
     docker:
-      - image: gcr.io/npav-172917/docker-go-sdk:1.0.1-centos7ansible
-        auth:
-          username: ${GCR_DOCKER_RO_USERNAME}
-          password: ${GCR_DOCKER_RO_PASSWORD}
+      - image: circleci/openjdk:8u121-jdk
 
-    working_directory: /root/go/src/github.com/accedian/aod-deployer
+    working_directory: /aod-deployer
     steps:
       - checkout   
       
       - setup_remote_docker
       
       - run:
-          name: unpacking service account
-          command: |
-            echo $GCLOUD_SERVICE_KEY | base64 -d  > ${HOME}/gcloud-service-key.json
-
-      - run:
           name: "Push image to GCR"
           command: |
             # Only push docker image when on master branch on the Accedian project
             if [ "${CIRCLE_BRANCH}" == "master" ] && [ "${CIRCLE_PROJECT_USERNAME}" == "Accedian" ]; then
+               echo $GCLOUD_SERVICE_KEY | base64 -d  > ${HOME}/gcloud-service-key.json
                docker login -u _json_key -p "$(echo $GCR_DOCKER_RW_PASSWORD)" https://gcr.io
                echo "Now Tagging"
                git config --global user.email "${CIRCLE_USERNAME}@accedian.com"
@@ -41,6 +53,9 @@ workflows:
   version: 2
   build_and_release: 
     jobs:
+      - build:
+	  contex: org-global
+
       - release:
           context: org-global
           filters:

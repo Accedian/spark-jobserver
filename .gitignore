@@ -9,6 +9,7 @@ test-reports/
 .idea*
 .vagrant
 *.pyc
+*.swp
 
 # ignore deployment configs
 config/*.conf
