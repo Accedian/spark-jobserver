@@ -49,7 +49,7 @@ workflows:
   build_and_release: 
     jobs:
       - build:
-	  contex: org-global
+          contex: org-global
 
       - release:
           context: org-global
