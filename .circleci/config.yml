@@ -12,7 +12,7 @@ jobs:
     steps:
       - run:
 	  name: "Login into NPAV GCE docker repository"
-          docker login -u ${GCE_DOCKER_RO_USERNAME} -p "$(echo $GCR_DOCKER_RO_PASSWORD)" https://gcr.io
+          command: docker login -u ${GCE_DOCKER_RO_USERNAME} -p "$(echo $GCR_DOCKER_RO_PASSWORD)" https://gcr.io
 	  
       - checkout   
       
