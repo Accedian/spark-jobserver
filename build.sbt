@@ -282,6 +282,11 @@ lazy val publishSettings = Seq(
   bintrayOrganization := Some("spark-jobserver")
 )
 
+assemblyMergeStrategy in assembly := {
+ case PathList("META-INF", xs @ _*) => MergeStrategy.discard
+ case x => MergeStrategy.first
+}
+
 // This is here so we can easily switch back to Logback when Spark fixes its log4j dependency.
 lazy val jobServerLogbackLogging = "-Dlogback.configurationFile=config/logback-local.xml"
 lazy val jobServerLogging = "-Dlog4j.configuration=file:config/log4j-local.properties"

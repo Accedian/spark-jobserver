@@ -22,6 +22,8 @@ metastore_db/
 #ignore generated config
 bin/ec2_example.sh
 
+job-server/mem*
+
 # ignore spark-ec2 script
 ec2Cluster/
 
