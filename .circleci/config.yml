@@ -50,7 +50,7 @@ workflows:
     jobs:
       - build:
           contex: org-global
-
+      
       - release:
           context: org-global
           filters:
