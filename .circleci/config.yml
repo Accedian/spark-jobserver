@@ -6,7 +6,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/openjdk:8u121-jdk
+      - image: circleci/openjdk:8-jdk
 
     working_directory: /aod-deployer
     steps:
@@ -21,7 +21,7 @@ jobs:
 
   release:
     docker:
-      - image: circleci/openjdk:8u121-jdk
+      - image: circleci/openjdk:8-jdk
 
     working_directory: /aod-deployer
     steps:
