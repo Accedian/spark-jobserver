@@ -8,7 +8,7 @@ jobs:
     docker:
       - image: circleci/openjdk:8-jdk
 
-    working_directory: /aod-deployer
+    working_directory: /root/aod-deployer
     steps:
       - run:
           name: "Login into NPAV GCE docker repository" 
@@ -23,7 +23,7 @@ jobs:
     docker:
       - image: circleci/openjdk:8-jdk
 
-    working_directory: /aod-deployer
+    working_directory: /root/aod-deployer
     steps:
       - checkout   
       - setup_remote_docker
