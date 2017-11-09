@@ -11,7 +11,7 @@ jobs:
     working_directory: /aod-deployer
     steps:
       - run:
-          name: "Login into NPAV GCE docker repository"
+          name: "Login into NPAV GCE docker repository" 
           command: docker login -u ${GCE_DOCKER_RO_USERNAME} -p "$(echo $GCR_DOCKER_RO_PASSWORD)" https://gcr.io
 	  
       - checkout   
