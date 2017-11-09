@@ -2,7 +2,7 @@ DOCKER_REPO_NAME:= gcr.io/npav-172917/
 DOCKER_IMAGE_NAME := spark-job-server-2.2.0-hadoop-2.7
 GO_REPOSITORY_PATH := github.com/accedian/$(DOCKER_IMAGE_NAME)
 DOCKER_VER := $(if $(DOCKER_VER),$(DOCKER_VER),latest)
-
+ 
 DOCKER_FILE := Dockerfile
 
 all: docker
