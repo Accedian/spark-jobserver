@@ -11,13 +11,13 @@ jobs:
     working_directory: /aod-deployer
     steps:
       - run:
-        name: "Login into NPAV GCE docker repository" 
-        command: docker login -u ${GCE_DOCKER_RO_USERNAME} -p "$(echo $GCR_DOCKER_RO_PASSWORD)" https://gcr.io
+          name: "Login into NPAV GCE docker repository" 
+          command: docker login -u ${GCE_DOCKER_RO_USERNAME} -p "$(echo $GCR_DOCKER_RO_PASSWORD)" https://gcr.io
       - checkout
       - setup_remote_docker
       - run:
-        name: "Building Spark job-server"
-        command: make circleci-docker 
+          name: "Building Spark job-server"
+          command: make circleci-docker 
 
   release:
     docker:
@@ -28,20 +28,20 @@ jobs:
       - checkout   
       - setup_remote_docker
       - run:
-        name: "Push image to GCR"
-        command: |
-          # Only push docker image when on master branch on the Accedian project
-          if [ "${CIRCLE_BRANCH}" == "master" ] && [ "${CIRCLE_PROJECT_USERNAME}" == "Accedian" ]; then
-            echo $GCLOUD_SERVICE_KEY | base64 -d  > ${HOME}/gcloud-service-key.json
-            docker login -u _json_key -p "$(echo $GCR_DOCKER_RW_PASSWORD)" https://gcr.io
-            echo "Now Tagging"
-            git config --global user.email "${CIRCLE_USERNAME}@accedian.com"
-            git config --global user.name "CircleCI"
-            git semver minor
-            export DOCKER_VER=$(git semver get)
-            git push origin master ${DOCKER_VER}
-            make circleci-push  
-          fi
+          name: "Push image to GCR"
+          command: |
+            # Only push docker image when on master branch on the Accedian project
+            if [ "${CIRCLE_BRANCH}" == "master" ] && [ "${CIRCLE_PROJECT_USERNAME}" == "Accedian" ]; then
+              echo $GCLOUD_SERVICE_KEY | base64 -d  > ${HOME}/gcloud-service-key.json
+              docker login -u _json_key -p "$(echo $GCR_DOCKER_RW_PASSWORD)" https://gcr.io
+              echo "Now Tagging"
+              git config --global user.email "${CIRCLE_USERNAME}@accedian.com"
+              git config --global user.name "CircleCI"
+              git semver minor
+              export DOCKER_VER=$(git semver get)
+              git push origin master ${DOCKER_VER}
+              make circleci-push  
+            fi
 
 workflows:
   version: 2
