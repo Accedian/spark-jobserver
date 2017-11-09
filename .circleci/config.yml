@@ -13,11 +13,8 @@ jobs:
       - run:
           name: "Login into NPAV GCE docker repository" 
           command: docker login -u ${GCE_DOCKER_RO_USERNAME} -p "$(echo $GCR_DOCKER_RO_PASSWORD)" https://gcr.io
-	  
-      - checkout   
-      
+	    - checkout
       - setup_remote_docker
-      
       - run:
           name: "Building Spark job-server"
           command: make circleci-docker 
@@ -30,9 +27,7 @@ jobs:
     working_directory: /aod-deployer
     steps:
       - checkout   
-      
       - setup_remote_docker
-      
       - run:
           name: "Push image to GCR"
           command: |
